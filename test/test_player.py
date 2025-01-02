@@ -1,5 +1,6 @@
 import unittest
 from src.player import Player
+from src.deck import Deck
 from src.deck import Card
 from src.deck import Suits
 
@@ -7,7 +8,8 @@ from src.deck import Suits
 class PlayerTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.player = Player(Card(Suits.HEARTS, "5"), Card(Suits.SPADES, "Ace"))
+        self.player = Player(Card(Suits.HEARTS, "King"), Card(Suits.SPADES, "Ace"))
+        self.deck = Deck()
 
     def tearDown(self):
         pass
@@ -21,28 +23,36 @@ class PlayerTestCase(unittest.TestCase):
             new_player = Player(2, Card(Suits.DIAMONDS, "King"))
 
     def test_calculate_correct_score(self):
-        self.player_two = Player(
+        player_two = Player(
             Card(
                 Suits.DIAMONDS,
-                "4",
+                "King",
             ),
-            Card(Suits.CLUBS, "5"),
+            Card(Suits.CLUBS, "Queen"),
         )
-        self.player_three = Player(
+        player_two.hand.append(Card(Suits.DIAMONDS, "Ace"))
+
+        player_three = Player(
             Card(
                 Suits.CLUBS,
-                "Queen",
+                "9",
             ),
-            Card(Suits.SPADES, "King"),
+            Card(Suits.SPADES, "Ace"),
         )
+        player_three.hand.append(Card(Suits.CLUBS, "Ace"))
+
+        player_four = Player(Card(Suits.HEARTS, "5"), Card(Suits.HEARTS, "King"))
+        player_four.hand.append(Card(Suits.CLUBS, "10"))
 
         score_one = self.player.get_score()
-        score_two = self.player_two.get_score()
-        score_three = self.player_three.get_score()
+        score_two = player_two.get_score()
+        score_three = player_three.get_score()
+        score_four = player_four.get_score()
 
-        self.assertEqual(score_one, 16)
-        self.assertEqual(score_two, 9)
-        self.assertEqual(score_three, 20)
+        self.assertEqual(score_one, 21)
+        self.assertEqual(score_two, 21)
+        self.assertEqual(score_three, 21)
+        self.assertEqual(score_four, 25)
 
     def test_check_valid_hand(self):
         self.assertEqual(self.player.check_valid_hand(), True)
@@ -51,3 +61,13 @@ class PlayerTestCase(unittest.TestCase):
         invalid_player = Player(Card(Suits.HEARTS, "10"), Card(Suits.DIAMONDS, "10"))
         invalid_player.hand.append(Card(Suits.CLUBS, "2"))
         self.assertEqual(invalid_player.check_valid_hand(), False)
+
+    def test_hit_adds_card_to_hand(self):
+        self.player.hit(self.deck)
+        hand_size = len(self.player.hand)
+
+        self.assertEqual(hand_size, 3)
+
+    def test_stand_returns_score(self):
+        player_score = self.player.get_score()
+        self.assertEqual(player_score, 21)

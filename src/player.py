@@ -8,6 +8,14 @@ class Player:
 
         self.hand = [card_one, card_two]
 
+    def hit(self, deck):
+        self.hand.append(deck.cards.pop(0))
+        print(self.get_score())
+
+    def stand(self):
+        # In full game, this would remove the player from active players
+        return self.get_score()
+
     def get_score(self):
         score = 0
         ace_count = 0
@@ -30,3 +38,7 @@ class Player:
         if self.get_score() > 21:
             return False
         return True
+
+    def go_bust(self):
+        # In full game, this would remove the player from the round after invalid hand found
+        pass
