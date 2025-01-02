@@ -10,10 +10,12 @@ class DeckTestCase(unittest.TestCase):
     def tearDown(self):  # this method will be run after each test
         pass
 
-    def test_number_of_cards(self):  # any method beginning with 'test_' will be run by unittest
+    def test_number_of_cards(
+        self,
+    ):  # any method beginning with 'test_' will be run by unittest
         number_of_cards = len(self.deck.cards)
         self.assertEqual(number_of_cards, 52)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
