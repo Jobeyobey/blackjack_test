@@ -43,3 +43,11 @@ class PlayerTestCase(unittest.TestCase):
         self.assertEqual(score_one, 16)
         self.assertEqual(score_two, 9)
         self.assertEqual(score_three, 20)
+
+    def test_check_valid_hand(self):
+        self.assertEqual(self.player.check_valid_hand(), True)
+
+    def test_check_invalid_hand(self):
+        invalid_player = Player(Card(Suits.HEARTS, "10"), Card(Suits.DIAMONDS, "10"))
+        invalid_player.hand.append(Card(Suits.CLUBS, "2"))
+        self.assertEqual(invalid_player.check_valid_hand(), False)

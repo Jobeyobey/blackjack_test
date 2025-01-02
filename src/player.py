@@ -25,3 +25,8 @@ class Player:
                 break
 
         return score
+
+    def check_valid_hand(self):
+        if self.get_score() > 21:
+            return False
+        return True
